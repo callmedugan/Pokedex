@@ -1,5 +1,6 @@
 import { createInterface } from 'node:readline';
 import { stdin, stdout } from 'node:process';
+import { getCommands } from './command.js';
 
 export function cleanInput(input:string): string[]{
     const split= input.toLowerCase().split(" ");
@@ -22,9 +23,14 @@ export function startREPL(){
     rl.on("line", (line) => {
         //clean
         const response = cleanInput(line);
-        //check if empty and log first word
-        if(response.length !== 0)
-            console.log("Your command was: " + response[0]);
+        const command = getCommands()[response[0]];
+        if(command){
+            command.callback(getCommands());
+        }
+        else{
+            console.log("Unknown command")
+        }
+        //return to prompt
         rl.prompt();
     })
 };
