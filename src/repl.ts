@@ -15,12 +15,17 @@ export function startREPL(state:State){
     //start
     rl.prompt();
     //callback
-    rl.on("line", (line) => {
+    rl.on("line", async (line) => {
         //clean
         const response = cleanInput(line);
         const command = state.commands[response[0]];
+        //if command is valid, run callback
         if(command){
-            command.callback(state);
+            try{
+                await command.callback(state);
+            }catch(err){
+                console.log(err instanceof Error ? err.message : "unknown error")
+            }
         }
         else{
             console.log("Unknown command")
