@@ -31,7 +31,7 @@ export class PokeAPI {
 
   //used to get individual location data
   async fetchLocation(locationName: string): Promise<Location> {
-    const url = PokeAPI.baseURL + "/location/" + locationName;
+    const url = PokeAPI.baseURL + "/location-area/" + locationName;
     const cacheData = this.#cache.get(url);
     //if cache contains data
     if(cacheData != undefined){
