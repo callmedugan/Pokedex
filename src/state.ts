@@ -4,11 +4,12 @@ import { commandHelp } from './command_help.js';
 import { commandExit } from './command_exit.js';
 import { commandMap, commandMapB } from './command_map.js';
 import { PokeAPI } from './pokeapi.js';
+import { commandExplore } from './command_explore.js';
 
 export type CLICommand = {
   name: string;
   description: string;
-  callback: (state:State) => Promise<void>;
+  callback: (state:State, ...args: string[]) => Promise<void>;
 };
 
 export type State = {
@@ -46,6 +47,11 @@ export function initState(): State {
                 name: "mapb",
                 description: "View the previous 20 maps",
                 callback: commandMapB,
+            },
+            explore: {
+                name: "explore",
+                description: "View the pokemon found in the given map name",
+                callback: commandExplore,
             },
         },
         api: new PokeAPI,

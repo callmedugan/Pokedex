@@ -22,7 +22,7 @@ export function startREPL(state:State){
         //if command is valid, run callback
         if(command){
             try{
-                await command.callback(state);
+                await command.callback(state, response.length > 1 ? response[1] : "");
             }catch(err){
                 console.log(err instanceof Error ? err.message : "unknown error")
             }

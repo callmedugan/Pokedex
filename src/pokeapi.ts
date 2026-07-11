@@ -29,12 +29,29 @@ export class PokeAPI {
     return parsedData;
   }
 
+  //used to get individual location data
   async fetchLocation(locationName: string): Promise<Location> {
-    const response = await fetch(PokeAPI.baseURL + "/location/" + locationName)
-    return await response.json();
+    const url = PokeAPI.baseURL + "/location/" + locationName;
+    const cacheData = this.#cache.get(url);
+    //if cache contains data
+    if(cacheData != undefined){
+        console.log("*retrieved cache data*")
+        return cacheData.value;
+    }
+    //else
+    const response = await fetch(url)
+    if(!response.ok){
+        throw new Error("Unexpected response: " + response.status);
+    }
+    const parsedData = await response.json();
+    //store to cache
+    console.log("*updated cache data*")
+    this.#cache.add(url, parsedData);
+    return parsedData;
   }
 }
 
+//used for location areas
 export type ShallowLocations = {
     count: number
     next: string | null
@@ -42,12 +59,25 @@ export type ShallowLocations = {
     results: Result[]
 };
 
-export interface Result {
+//used for individual maps
+export type Location = {
+  id: number
+  name: string
+  location: Result
+  pokemon_encounters: PokemonEncounter[]
+}
+
+export type PokemonEncounter = {
+  pokemon: Pokemon
+}
+
+export type Pokemon = {
   name: string
   url: string
 }
 
-
-export type Location = {
-  // add properties here
-};
+//used for both
+export interface Result {
+  name: string
+  url: string
+}
