@@ -107,8 +107,34 @@ export type Result = {
 }
 
 //used for getting pokemon catch data
-export type PokemonData = {
-  name: string
-  id: number
+export interface PokemonData {
   base_experience: number
+  height: number
+  id: number
+  name: string
+  order: number
+  weight: number
+  stats: PokemonStat[]
+  types: PokemonType[]
+  moves: PokemonMove[]
+}
+
+type NamedAPIResource = {
+  name: string
+  url: string
+}
+
+type PokemonStat = {
+  base_stat: number
+  effort: number
+  stat: NamedAPIResource
+}
+
+type PokemonType = {
+  slot: number
+  type: NamedAPIResource
+}
+
+type PokemonMove = {
+  move: NamedAPIResource
 }

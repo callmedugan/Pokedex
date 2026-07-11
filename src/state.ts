@@ -7,6 +7,8 @@ import { PokeAPI, PokemonData as PokemonData } from './pokeapi.js';
 import { commandExplore } from './command_explore.js';
 import chalk from 'chalk';
 import { commandCatch } from './command_catch.js';
+import { inspect } from 'node:util';
+import { commandInspect } from './command_inspect.js';
 
 export type CLICommand = {
   name: string;
@@ -60,6 +62,11 @@ export function initState(): State {
                 name: "catch",
                 description: "Attempt to catch a Pokemon of the given name/id",
                 callback: commandCatch,
+            },
+            inspect: {
+                name: "inspect",
+                description: "Check details of a caught Pokemon of the given name/id",
+                callback: commandInspect,
             },
         },
         pokedex: new Map<string, PokemonData>,
