@@ -1,5 +1,6 @@
 import { stdin, stdout } from 'node:process';
 import { State } from './state.js';
+import chalk from 'chalk';
 
 export function cleanInput(input:string): string[]{
     const split= input.toLowerCase().split(" ");
@@ -28,7 +29,7 @@ export function startREPL(state:State){
             }
         }
         else{
-            console.log("Unknown command")
+            console.log(chalk.dim("Unknown command"))
         }
         //return to prompt
         rl.prompt();

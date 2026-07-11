@@ -1,4 +1,5 @@
 import { Cache } from "./pokecache.js";
+import chalk from "chalk";
 
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
@@ -14,7 +15,7 @@ export class PokeAPI {
     const cacheData = this.#cache.get(url);
     //if cache contains data
     if(cacheData != undefined){
-        console.log("*retrieved cache data*")
+        //console.log(chalk.dim("*retrieved cache data*"))
         return cacheData.value;
     }
     //else
@@ -24,7 +25,7 @@ export class PokeAPI {
     }
     const parsedData = await response.json();
     //store to cache
-    console.log("*updated cache data*")
+    //console.log(chalk.dim("*updated cache data*"))
     this.#cache.add(url, parsedData);
     return parsedData;
   }
@@ -35,7 +36,7 @@ export class PokeAPI {
     const cacheData = this.#cache.get(url);
     //if cache contains data
     if(cacheData != undefined){
-        console.log("*retrieved cache data*")
+        //console.log(chalk.dim("*retrieved cache data*"))
         return cacheData.value;
     }
     //else
@@ -45,13 +46,36 @@ export class PokeAPI {
     }
     const parsedData = await response.json();
     //store to cache
-    console.log("*updated cache data*")
+    //console.log(chalk.dim("*updated cache data*"))
+    this.#cache.add(url, parsedData);
+    return parsedData;
+  }
+
+//used to get individual pokemon data
+  async fetchPokemon(pokemonName: string): Promise<PokemonData> {
+    const url = PokeAPI.baseURL + "/pokemon/" + pokemonName;
+    const cacheData = this.#cache.get(url);
+    //if cache contains data
+    if(cacheData != undefined){
+        //console.log(chalk.dim("*retrieved cache data*"))
+        return cacheData.value;
+    }
+    //else
+    const response = await fetch(url)
+    if(!response.ok){
+        throw new Error("Unexpected response: " + response.status);
+    }
+    const parsedData = await response.json();
+    //store to cache
+    //console.log(chalk.dim("*updated cache data*"))
     this.#cache.add(url, parsedData);
     return parsedData;
   }
 }
 
-//used for location areas
+
+
+//used for location area groups
 export type ShallowLocations = {
     count: number
     next: string | null
@@ -59,7 +83,7 @@ export type ShallowLocations = {
     results: Result[]
 };
 
-//used for individual maps
+//used for location areas
 export type Location = {
   id: number
   name: string
@@ -77,7 +101,14 @@ export type Pokemon = {
 }
 
 //used for both
-export interface Result {
+export type Result = {
   name: string
   url: string
+}
+
+//used for getting pokemon catch data
+export type PokemonData = {
+  name: string
+  id: number
+  base_experience: number
 }

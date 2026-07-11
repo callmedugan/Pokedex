@@ -1,7 +1,3 @@
-import { time, timeStamp } from "node:console";
-import { TIMEOUT } from "node:dns";
-import { Network } from "node:inspector/promises";
-
 export type CacheEntry<T> = {
     createdAt:number,
     value:T,

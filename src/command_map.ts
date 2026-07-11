@@ -1,4 +1,5 @@
 import { State } from "./state.js";
+import chalk from "chalk";
 
 export async function commandMap(state:State){
     const response = await state.api.fetchLocations(state.nextLocationsURL)
@@ -10,8 +11,9 @@ export async function commandMap(state:State){
 }
 
 export async function commandMapB(state:State){
+    //check if on first page
     if(state.prevLocationsURL === null){
-        console.log("you're on the first page")
+        console.log(chalk.dim("You're on the first page"))
         return
     }
     const response = await state.api.fetchLocations(state.prevLocationsURL)
