@@ -11,6 +11,7 @@ export class Cache {
     #cache = new Map<string, CacheEntry<any>>();
     //timer to clear older entries
     #reapIntervalId: NodeJS.Timeout | undefined = undefined;
+    //milliseconds
     #interval: number;
 
     constructor(interval:number){
@@ -29,7 +30,7 @@ export class Cache {
 
     //starts reap loop and repeats every interval
     #startReapLoop(){
-        this.#reapIntervalId = setTimeout(this.#reap, this.#interval);
+        this.#reapIntervalId = setTimeout(() => {this.#reap()}, this.#interval);
     }
 
     //stops loop
